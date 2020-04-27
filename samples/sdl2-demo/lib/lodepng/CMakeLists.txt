@@ -1,0 +1,15 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+PROJECT(lodepng)
+
+CreateLibrary(${PROJECT_NAME}
+DIRS
+    .
+INCLUDES
+    PUBLIC
+        .
+    PRIVATE
+        ${SDL2_INCLUDE_DIR}
+PROPERTIES
+    FOLDER "3rd Party"
+
+)

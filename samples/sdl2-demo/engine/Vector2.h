@@ -1,0 +1,87 @@
+//
+//  Vector2.h
+//  SimpleGameFramework
+//
+//  Created by Edward Rudd on 2/20/15.
+//
+//
+
+#pragma once
+
+#include <cstdint>
+
+template<typename T>
+struct Vector2 {
+	T x, y;
+
+	Vector2() : x( T()), y( T()) {}
+
+	Vector2(T _v) : x( _v ), y( _v ) {}
+
+	Vector2(T _x, T _y) : x( _x ), y( _y ) {}
+
+	template<typename T2>
+	Vector2<T2> as() const
+	{
+		return Vector2<T2>( T2( x ), T2( y ));
+	}
+
+	Vector2<T>& operator-=(const Vector2<T>& o)
+	{
+		this->x -= o.x;
+		this->y -= o.y;
+
+		return *this;
+	}
+
+	Vector2<T>& operator+=(const Vector2<T>& o)
+	{
+		this->x += o.x;
+		this->y += o.y;
+
+		return *this;
+	}
+
+	Vector2<T> operator-(const Vector2<T>& o) const
+	{
+		return Vector2<T>( x - o.x, y - o.y );
+	}
+
+	Vector2<T> operator+(const Vector2<T>& o) const
+	{
+		return Vector2<T>( x + o.x, y + o.y );
+	}
+
+	Vector2<T> operator/(const Vector2<T>& o) const
+	{
+		return Vector2<T>( x / o.x, y / o.y );
+	}
+
+	Vector2<T> operator/(T o) const
+	{
+		return Vector2<T>( x / o, y / o );
+	}
+
+	Vector2<T> operator*(const Vector2<T>& o) const
+	{
+		return Vector2<T>( x * o.x, y * o.y );
+	}
+
+	Vector2<T> operator*(T o) const
+	{
+		return Vector2<T>( x * o, y * o );
+	}
+
+	bool operator==(const Vector2<T>& o) const
+	{
+		return x == o.x && y == o.y;
+	}
+
+	bool operator!=(const Vector2<T>& o) const
+	{
+		return x != o.x || y != o.y;
+	}
+};
+
+typedef Vector2<float> Vector2f;
+typedef Vector2<int32_t> Vector2i;

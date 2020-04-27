@@ -30,6 +30,10 @@ if(FLATC_EXECUTABLE)
 	)
 endif()
 
+if(SDL2_FOUND)
+	add_subdirectory(sdl2-demo sdl2-demo)
+endif()
+
 CreateTool(lobby_demo
 FILES
 	lobby_demo.cpp

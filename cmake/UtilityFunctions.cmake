@@ -330,6 +330,10 @@ function(_BuildDynamicTarget name type)
             set_target_properties(${name} PROPERTIES
                 LINK_FLAGS "-Wl,--allow-shlib-undefined" # Voodoo to ignore the libs that steam_api is linked to (will be resolved at runtime)
             )
+        elseif(EMSCRIPTEN)
+            set_target_properties(${name} PROPERTIES
+                SUFFIX ".html"
+            )
         endif()
     endif()
     if(_include_dirs)
@@ -643,7 +647,11 @@ if(EMSCRIPTEN)
         NO_CMAKE_FIND_ROOT_PATH
     )
     function(EmscriptenCreatePackage output_file out_js_file)
-        set(_data_file ${CMAKE_CURRENT_BINARY_DIR}/${output_file}.data)
+        if (CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+            set(_data_file ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${output_file}.data)
+        else()
+            set(_data_file ${CMAKE_CURRENT_BINARY_DIR}/${output_file}.data)
+        endif()
         set(_preload_file ${CMAKE_CURRENT_BINARY_DIR}/${output_file}.data.js)
 
         set(_mode "none")
@@ -688,10 +696,10 @@ if(EMSCRIPTEN)
             COMMAND
                 ${EM_PYTHON} ${EM_FILE_PACKAGER}
             ARGS
-                ${output_file}.data
-                --js-output=${output_file}.data.js
-                --preload ${preload_map}
                 ${extra_opts}
+                "${_data_file}"
+                --js-output="${_preload_file}"
+                --preload ${preload_map}
         )
         set_source_files_properties(${_data_file} ${_preload_file} PROPERTIES GENERATED TRUE)
         set(${out_js_file} ${_preload_file} PARENT_SCOPE)
